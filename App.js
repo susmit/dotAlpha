@@ -1,5 +1,6 @@
 import './shim'
 import Bitcoin from 'react-native-bitcoinjs-lib'
+import bip39 from 'react-native-bip39'
 import React, { Component, PropTypes } from 'react'
 import {
   View,
@@ -9,17 +10,33 @@ import {
   TouchableOpacity,
 } from 'react-native'
 
-export default class RNBitcoinJSExample extends Component {
+
+export default class DotAlpa extends Component {
 
   constructor(props) {
     super(props)
 
     this.state = {
       address: '',
+      mnemonic: 'test seed',
+      seed: '',
     }
-
-    this.generateNewAddress = this.generateNewAddress.bind(this)
   }
+
+  generateMnemonics = async () => {
+  try {
+    var t = await bip39.generateMnemonic()
+    return t // default to 128
+  } catch(e) {
+    return false
+  }
+}
+
+  generateMnemonic = async () => {
+    //var mnemonic = bip39.validateMnemonic('basket actual')
+    let mnemonic = await this.generateMnemonics()
+    this.setState({mnemonic})
+}
 
   generateNewAddress = () => {
     const keypair = Bitcoin.ECPair.makeRandom()
@@ -29,12 +46,16 @@ export default class RNBitcoinJSExample extends Component {
   render() {
     return(
       <View style={styles.container}>
-        <Text style={styles.title}>React Native</Text>
+        <Text style={styles.title}>DotAlpha</Text>
         <Text style={[styles.title, {marginBottom: 150}]}>Bitcoin Wallet</Text>
         <TouchableOpacity onPress={this.generateNewAddress} style={styles.button}>
           <Text style={styles.buttonText}>Generate new address</Text>
         </TouchableOpacity>
-        <Text style={styles.address}>{this.state.address}</Text>
+          <Text style={styles.address}>{this.state.address}</Text>
+        <TouchableOpacity onPress={this.generateMnemonic} style={styles.button}>
+          <Text style={styles.buttonText}>Generate new mnemonic</Text>
+        </TouchableOpacity>
+        <Text style={styles.address}>{this.state.mnemonic}</Text>
       </View>
     )
   }

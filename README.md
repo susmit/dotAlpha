@@ -16,3 +16,11 @@ secure enclave(for IOS)
 - [ ] Creation of transaction by one of the multisig signatories and ability for other signatories to be notified for approval. Only transactions approved by specified number of approvers to be broadcast on chain.
 
 - [ ] UI interface and ability to see and use the functionality on mobile app.
+
+
+#### Instructions
+ * git clone `https://github.com/thecryptobee/dotAlpha`
+ * In terminal navigate to dotAlpha folder
+ * `npm install`
+ * `rn-nodeify --install --hack` 
+ * `react-native run-ios or react-native run-android`
