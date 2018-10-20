@@ -12,6 +12,7 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  ImageBackground,
 } from 'react-native'
 
 const { width } = Dimensions.get('window');
@@ -34,8 +35,9 @@ export default class DotAlpa extends Component {
     }
   }
 
+
+///generates mnemonics and convert them to seed
   generateMnemonic = async () => {
-    //var mnemonic = bip39.validateMnemonic('basket actual')
     let mnemonic = await bip39.generateMnemonic() // default 128
     let value = this.state.passphrase
     console.log(value)
@@ -45,13 +47,15 @@ export default class DotAlpa extends Component {
     }
     else{
        seed = bip39.mnemonicToSeed(mnemonic,value)
-      seedHex = bip39.mnemonicToSeedHex(mnemonic,value)
+       seedHex = bip39.mnemonicToSeedHex(mnemonic,value)
     }
     this.setState({mnemonic:mnemonic})
     this.setState({seed:seed})
     this.setState({seedHex:seedHex})
 }
 
+
+// generates address
   generateNewAddress = () => {
     const keypair = Bitcoin.ECPair.makeRandom()
     this.setState({address: keypair.getAddress()})
@@ -77,11 +81,12 @@ export default class DotAlpa extends Component {
        bottom: 0,
        right: 30,
      }}>
-     <View style={styles.view} />
-     <View style={styles.view2} />
-     <View style={styles.view} />
-     <View style={styles.view2} />
-     <View style={styles.view} />
+     <ImageBackground source={require('./btc-shape.png')} style={styles.view} />
+     <ImageBackground source={require('./btc-shape.png')} style={styles.view2} />
+     <ImageBackground source={require('./btc-shape.png')} style={styles.view3} />
+     <ImageBackground source={require('./btc-shape.png')} style={styles.view} />
+     <ImageBackground source={require('./btc-shape.png')} style={styles.view2} />
+     <ImageBackground source={require('./btc-shape.png')} style={styles.view3} />
    </ScrollView>
 
         <TouchableOpacity onPress={this.generateNewAddress} style={styles.button}>
@@ -92,7 +97,7 @@ export default class DotAlpa extends Component {
           <Text style={styles.buttonText}>Generate mnemonic</Text>
         </TouchableOpacity>
         <TextInput
-          style={{height: 20, borderColor: '#b5b5b5', borderWidth: 1,marginBottom: 5}}
+          style={{height: 40, borderColor: '#b5b5b5', borderWidth: 1,marginBottom: 5}}
           onChangeText={(passphrase) => this.setState({passphrase})}
           value={this.state.passphrase}
         />
@@ -149,6 +154,15 @@ const styles = StyleSheet.create({
   view2: {
     marginTop: 10,
     backgroundColor: '#8bc34a',
+    width: width - 80,
+    margin: 10,
+    height: 180,
+    borderRadius: 10,
+    //paddingHorizontal : 30
+  },
+  view3: {
+    marginTop: 10,
+    backgroundColor: '#ffa726',
     width: width - 80,
     margin: 10,
     height: 180,
