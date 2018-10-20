@@ -8,6 +8,7 @@ import {
   StyleSheet,
   AppRegistry,
   TouchableOpacity,
+  TextInput,
 } from 'react-native'
 
 
@@ -18,17 +19,26 @@ export default class DotAlpa extends Component {
 
     this.state = {
       address: 'Your address will appear here',
-      mnemonic: 'Your seed will appear here',
+      mnemonic: 'Your mnemonics will appear here',
       seed: 'Your seed ',
       seedHex: 'Your seed in hex',
+      passphrase: "Enter passphrase",
     }
   }
 
   generateMnemonic = async () => {
     //var mnemonic = bip39.validateMnemonic('basket actual')
     let mnemonic = await bip39.generateMnemonic() // default 128
-    let seed = bip39.mnemonicToSeed(mnemonic)
-    let seedHex = bip39.mnemonicToSeedHex(mnemonic)
+    let value = this.state.passphrase
+    console.log(value)
+    if (value == "Enter passphrase"){
+       seed = bip39.mnemonicToSeed(mnemonic)
+       seedHex = bip39.mnemonicToSeedHex(mnemonic)
+    }
+    else{
+       seed = bip39.mnemonicToSeed(mnemonic,value)
+      seedHex = bip39.mnemonicToSeedHex(mnemonic,value)
+    }
     this.setState({mnemonic:mnemonic})
     this.setState({seed:seed})
     this.setState({seedHex:seedHex})
@@ -51,9 +61,15 @@ export default class DotAlpa extends Component {
         <TouchableOpacity onPress={this.generateMnemonic} style={styles.button}>
           <Text style={styles.buttonText}>Generate new mnemonic</Text>
         </TouchableOpacity>
-        <Text style={styles.address}>{this.state.mnemonic}</Text>
-        <Text style={styles.address}>{this.state.seed}</Text>
-        <Text style={styles.address}>{this.state.seedHex}</Text>
+        <TextInput
+          style={{height: 40, borderColor: '#b5b5b5', borderWidth: 1,marginBottom: 10}}
+          onChangeText={(passphrase) => this.setState({passphrase})}
+          value={this.state.passphrase}
+        />
+        <Text style={styles.address}>mnemonics: {this.state.mnemonic}</Text>
+        <Text style={styles.address}>{this.state.passphrase}</Text>
+        <Text style={styles.address}>seed: {this.state.seed}</Text>
+        <Text style={styles.address}>seedHex: {this.state.seedHex}</Text>
       </View>
     )
   }
