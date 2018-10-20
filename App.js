@@ -2,6 +2,7 @@ import './shim'
 import Bitcoin from 'react-native-bitcoinjs-lib'
 import bip39 from 'react-native-bip39'
 import React, { Component, PropTypes } from 'react'
+import { StackNavigator } from 'react-navigation';
 import {
   View,
   Text,
@@ -13,15 +14,57 @@ import {
   Dimensions,
   ScrollView,
   ImageBackground,
+   Button,
 } from 'react-native'
 
 const { width } = Dimensions.get('window');
 
-export default class DotAlpa extends Component {
+class HomeScreen extends React.Component {
+
 
   componentDidMount() {
   setTimeout(() => {this.scrollView.scrollTo({x: -30}) }, 1) // scroll view position fix
 }
+
+
+  render() {
+    return (
+      <View style={styles.container}>
+      <ScrollView
+     ref={(scrollView) => { this.scrollView = scrollView; }}
+     //style={styles.container}
+     //pagingEnabled={true}
+     style={styles.scrollView}
+     horizontal= {true}
+     decelerationRate={0}
+     snapToInterval={width - 60}
+     snapToAlignment={"center"}
+     contentInset={{
+       top: 0,
+       left: 30,
+       bottom: 0,
+       right: 30,
+     }}>
+     <ImageBackground source={require('./btc-shape.png')} style={styles.view} />
+     <ImageBackground source={require('./btc-shape.png')} style={styles.view2} />
+     <ImageBackground source={require('./btc-shape.png')} style={styles.view3} />
+     <ImageBackground source={require('./btc-shape.png')} style={styles.view} />
+     <ImageBackground source={require('./btc-shape.png')} style={styles.view2} />
+     <ImageBackground source={require('./btc-shape.png')} style={styles.view3} />
+   </ScrollView>
+
+        <Text  >Welcome Screen</Text>
+        <Button
+          title="Generate Wallet"
+          onPress={() => this.props.navigation.navigate('DotAlpa')}
+        />
+      </View>
+    );
+  }
+}
+
+ class DotAlpa extends Component {
+
 
   constructor(props) {
     super(props)
@@ -67,28 +110,6 @@ export default class DotAlpa extends Component {
 
       <Text style={styles.title}>DotAlpha Bitcoin Wallet</Text>
 
-      <ScrollView
-     ref={(scrollView) => { this.scrollView = scrollView; }}
-     //style={styles.container}
-     //pagingEnabled={true}
-     horizontal= {true}
-     decelerationRate={0}
-     snapToInterval={width - 60}
-     snapToAlignment={"center"}
-     contentInset={{
-       top: 0,
-       left: 30,
-       bottom: 0,
-       right: 30,
-     }}>
-     <ImageBackground source={require('./btc-shape.png')} style={styles.view} />
-     <ImageBackground source={require('./btc-shape.png')} style={styles.view2} />
-     <ImageBackground source={require('./btc-shape.png')} style={styles.view3} />
-     <ImageBackground source={require('./btc-shape.png')} style={styles.view} />
-     <ImageBackground source={require('./btc-shape.png')} style={styles.view2} />
-     <ImageBackground source={require('./btc-shape.png')} style={styles.view3} />
-   </ScrollView>
-
         <TouchableOpacity onPress={this.generateNewAddress} style={styles.button}>
           <Text style={styles.buttonText}>Generate new address</Text>
         </TouchableOpacity>
@@ -110,7 +131,31 @@ export default class DotAlpa extends Component {
   }
 }
 
+const RootStack = StackNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+    },
+    DotAlpa: {
+      screen: DotAlpa,
+    },
+  },
+  {
+    initialRouteName: 'Home',
+  }
+);
+
+export default class App extends React.Component {
+  render() {
+    return <RootStack />;
+  }
+}
+
+
 const styles = StyleSheet.create({
+  scrollView:{
+    flex: 4,
+  },
   container: {
     flex: 1,
     padding: 10,
