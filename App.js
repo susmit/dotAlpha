@@ -17,25 +17,21 @@ export default class DotAlpa extends Component {
     super(props)
 
     this.state = {
-      address: '',
-      mnemonic: 'test seed',
-      seed: '',
+      address: 'Your address will appear here',
+      mnemonic: 'Your seed will appear here',
+      seed: 'Your seed ',
+      seedHex: 'Your seed in hex',
     }
   }
 
-  generateMnemonics = async () => {
-  try {
-    var t = await bip39.generateMnemonic()
-    return t // default to 128
-  } catch(e) {
-    return false
-  }
-}
-
   generateMnemonic = async () => {
     //var mnemonic = bip39.validateMnemonic('basket actual')
-    let mnemonic = await this.generateMnemonics()
-    this.setState({mnemonic})
+    let mnemonic = await bip39.generateMnemonic() // default 128
+    let seed = bip39.mnemonicToSeed(mnemonic)
+    let seedHex = bip39.mnemonicToSeedHex(mnemonic)
+    this.setState({mnemonic:mnemonic})
+    this.setState({seed:seed})
+    this.setState({seedHex:seedHex})
 }
 
   generateNewAddress = () => {
@@ -47,7 +43,7 @@ export default class DotAlpa extends Component {
     return(
       <View style={styles.container}>
         <Text style={styles.title}>DotAlpha</Text>
-        <Text style={[styles.title, {marginBottom: 150}]}>Bitcoin Wallet</Text>
+        <Text style={[styles.title, {marginBottom: 10}]}>Bitcoin Wallet</Text>
         <TouchableOpacity onPress={this.generateNewAddress} style={styles.button}>
           <Text style={styles.buttonText}>Generate new address</Text>
         </TouchableOpacity>
@@ -56,6 +52,8 @@ export default class DotAlpa extends Component {
           <Text style={styles.buttonText}>Generate new mnemonic</Text>
         </TouchableOpacity>
         <Text style={styles.address}>{this.state.mnemonic}</Text>
+        <Text style={styles.address}>{this.state.seed}</Text>
+        <Text style={styles.address}>{this.state.seedHex}</Text>
       </View>
     )
   }
