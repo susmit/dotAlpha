@@ -9,10 +9,18 @@ import {
   AppRegistry,
   TouchableOpacity,
   TextInput,
+  Image,
+  Dimensions,
+  ScrollView,
 } from 'react-native'
 
+const { width } = Dimensions.get('window');
 
 export default class DotAlpa extends Component {
+
+  componentDidMount() {
+  setTimeout(() => {this.scrollView.scrollTo({x: -30}) }, 1) // scroll view position fix
+}
 
   constructor(props) {
     super(props)
@@ -52,17 +60,39 @@ export default class DotAlpa extends Component {
   render() {
     return(
       <View style={styles.container}>
-        <Text style={styles.title}>DotAlpha</Text>
-        <Text style={[styles.title, {marginBottom: 10}]}>Bitcoin Wallet</Text>
+
+      <Text style={styles.title}>DotAlpha Bitcoin Wallet</Text>
+
+      <ScrollView
+     ref={(scrollView) => { this.scrollView = scrollView; }}
+     //style={styles.container}
+     //pagingEnabled={true}
+     horizontal= {true}
+     decelerationRate={0}
+     snapToInterval={width - 60}
+     snapToAlignment={"center"}
+     contentInset={{
+       top: 0,
+       left: 30,
+       bottom: 0,
+       right: 30,
+     }}>
+     <View style={styles.view} />
+     <View style={styles.view2} />
+     <View style={styles.view} />
+     <View style={styles.view2} />
+     <View style={styles.view} />
+   </ScrollView>
+
         <TouchableOpacity onPress={this.generateNewAddress} style={styles.button}>
           <Text style={styles.buttonText}>Generate new address</Text>
         </TouchableOpacity>
           <Text style={styles.address}>{this.state.address}</Text>
         <TouchableOpacity onPress={this.generateMnemonic} style={styles.button}>
-          <Text style={styles.buttonText}>Generate new mnemonic</Text>
+          <Text style={styles.buttonText}>Generate mnemonic</Text>
         </TouchableOpacity>
         <TextInput
-          style={{height: 40, borderColor: '#b5b5b5', borderWidth: 1,marginBottom: 10}}
+          style={{height: 20, borderColor: '#b5b5b5', borderWidth: 1,marginBottom: 5}}
           onChangeText={(passphrase) => this.setState({passphrase})}
           value={this.state.passphrase}
         />
@@ -84,13 +114,13 @@ const styles = StyleSheet.create({
   },
   title: {
     padding: 8,
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: '900',
   },
   button: {
     width: 200,
     borderRadius: 4,
-    marginBottom: 25,
+    marginBottom: 15,
     paddingVertical: 8,
     alignItems: 'center',
     paddingHorizontal: 20,
@@ -102,9 +132,27 @@ const styles = StyleSheet.create({
   },
   address: {
     flex: 1,
-    fontSize: 15,
+    fontSize: 10,
     color: '#b5b5b5',
     fontWeight: '600',
     textAlign: 'center',
-  }
+  },
+  view: {
+    marginTop: 10,
+    backgroundColor: '#64b5f6',
+    width: width - 80,
+    margin: 10,
+    height: 180,
+    borderRadius: 10,
+    //paddingHorizontal : 30
+  },
+  view2: {
+    marginTop: 10,
+    backgroundColor: '#8bc34a',
+    width: width - 80,
+    margin: 10,
+    height: 180,
+    borderRadius: 10,
+    //paddingHorizontal : 30
+  },
 })
