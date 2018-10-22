@@ -29,6 +29,7 @@ export default class AddWallet extends Component {
 
 
 ///generates mnemonics and convert them to seed
+/// test something in thi commit
  generateMnemonic = async () => {
    let mnemonic = await bip39.generateMnemonic() // default 128
    let value = this.state.passphrase
